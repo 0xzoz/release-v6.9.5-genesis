@@ -1,4 +1,4 @@
-# release-v6.9.0-rc.0-genesis
+# release-v6.9.0-rc.0-genesis-2
 
 ## Genesis Instructions
 (WIP)
