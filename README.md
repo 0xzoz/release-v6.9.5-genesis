@@ -43,7 +43,12 @@ nano ~/.libra/github_token.txt
 ```
 - Confirm with "done" in the Genesis Worksheet.
 
-### 5. Pre-Genesis Registration
+### 5. Fetch Static IP
+```bash
+curl -s ipinfo.io | jq .ip
+```
+
+### 6. Pre-Genesis Registration
 - Ensure you delete any forked version of `release-v6.9.0-rc.0-genesis-2` in your home org before registering.
 ```bash
 cd ~/libra-framework
@@ -51,13 +56,13 @@ cd ~/libra-framework
 ```
 - Confirm with "done" in the Genesis Worksheet.
 
-### 6. PR Received
+### 7. PR Received
 (coordinator confirms PR was received)
 
-### 7. PR Merged
+### 8. PR Merged
 (coordinator merges PR and confirms)
 
-### 8. Build JSON_Legacy
+### 9. Build JSON_Legacy
 ```bash
 # Fetch Ancestry Data
 # install
@@ -77,11 +82,11 @@ md5sum ~/v5_recovery.json
 ```
 - Confirm `v5_recovery.json` md5 hash in the Genesis Worksheet.
 
-### 9. All nodes added to `layout.yaml` users key
+### 10. All nodes added to `layout.yaml` users key
 (coordinator)  
 > ⚠️ **Note**: Pre-genesis set closes here. Wait for the coordinator.
 
-### 10. Pull from genesis repo and build
+### 11. Pull from genesis repo and build
 ```bash
 # pull and build genesis
 cd ~/libra-framework/tools/genesis
@@ -90,7 +95,7 @@ GIT_ORG=0LNetworkCommunity GIT_REPO=release-v6.9.0-rc.0-genesis-6 RECOVERY_FILE=
 - Confirm with "done" in the Genesis Worksheet.
 > ⚠️ **Note**: Wait for the coordinator before proceeding.
 
-### 11. Start nodes!
+### 12. Start nodes!
 Wait for the coordinator, say a prayer, then start!
 ```bash
 ~/libra-framework/target/release/libra node --config-path ~/.libra/validator.yaml
