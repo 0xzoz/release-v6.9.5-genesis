@@ -1,9 +1,9 @@
 
-# 0L v6.9.x Genesis Ceremony Guide
+# Genesis Ceremony Guide
 
 **Coordinator**: `sirouk`
 
-> ⚠️ **Important**: Only proceed with asynchronous steps after the coordinator confirms the previous sequential blocking steps as completed.
+> ⚠️ **Important**: Only proceed with asynchronous steps after the previous sequential blocking steps are confirmed as completed by the coordinator.
 
 ## Genesis Ceremony Steps
 
@@ -14,10 +14,15 @@
   rm -Rf ~/libra-framework
   rm -Rf ~/.libra/data && rm -Rf ~/.libra/genesis && rm -Rf ~/.libra/secure-data.json
   ```
-- Retrieve VAL Address:
+- Retrieve Validator Address:
   ```bash
   grep 'account_address' ~/.libra/public-keys.yaml
   ```
+- Fetch Static IP
+```bash
+curl -s ipinfo.io | jq .ip
+```
+Enter your Validator Address, Operator Name, and Static IP in the Genesis Worksheet.
 
 ### 2. Fetch source & verify commit hash
 ```bash
@@ -36,19 +41,14 @@ cargo build --release -p libra -p libra-genesis-tools -p libra-txs -p diem-db-to
 ```
 - Confirm with "done" in the Genesis Worksheet.
 
-### 4. Prepare `.libra` directory and add your GitHub PAT (use classic w/repo access)
+### 4. Prepare `.libra` directory and add GitHub key
 ```bash
 mkdir ~/.libra/
 nano ~/.libra/github_token.txt
 ```
 - Confirm with "done" in the Genesis Worksheet.
 
-### 5. Fetch Static IP
-```bash
-curl -s ipinfo.io | jq .ip
-```
-
-### 6. Pre-Genesis Registration
+### 5. Pre-Genesis Registration
 - Ensure you delete any forked version of `release-v6.9.0-rc.0-genesis-2` in your home org before registering.
 ```bash
 cd ~/libra-framework
@@ -56,13 +56,13 @@ cd ~/libra-framework
 ```
 - Confirm with "done" in the Genesis Worksheet.
 
-### 7. PR Received
-(coordinator confirms PR was received)
+### 6. PR Received
+(coordinator)
 
-### 8. PR Merged
-(coordinator merges PR and confirms)
+### 7. PR Merged
+(coordinator)
 
-### 9. Build JSON_Legacy
+### 8. Build JSON_Legacy
 ```bash
 # Fetch Ancestry Data
 # install
@@ -80,23 +80,21 @@ cd ~/libra-legacy-v6/ol/genesis-tools
 cargo r -p ol-genesis-tools -- --ancestry-file ~/ol-data-extraction/assets/data.json --recover ~/v5_recovery.json --snapshot-path ~/epoch-archive/667/state_ver*
 md5sum ~/v5_recovery.json
 ```
-- Confirm `v5_recovery.json` md5 hash in the Genesis Worksheet.
+- Confirm `v5_recover.json` md5 hash in the Genesis Worksheet.
 
-### 10. All nodes added to `layout.yaml` users key
+### 9. All nodes added to `layout.yaml` users key
 (coordinator)  
-> ⚠️ **Note**: Pre-genesis set closes here. Wait for the coordinator.
+> **Note**: Pre-genesis set closes here. Wait for coordinator.
 
-### 11. Pull from genesis repo and build
+### 10. Pull from genesis repo and build
 ```bash
 # pull and build genesis
 cd ~/libra-framework/tools/genesis
 GIT_ORG=0LNetworkCommunity GIT_REPO=release-v6.9.0-rc.0-genesis-6 RECOVERY_FILE=~/v5.2_recovery.json make genesis
 ```
 - Confirm with "done" in the Genesis Worksheet.
-> ⚠️ **Note**: Wait for the coordinator before proceeding.
 
-### 12. Start nodes!
-Wait for the coordinator, say a prayer, then start!
+### 11. Start nodes!
 ```bash
 ~/libra-framework/target/release/libra node --config-path ~/.libra/validator.yaml
 ```
