@@ -84,7 +84,7 @@ md5sum ~/v5_recovery.json
 
 ### 9. All nodes added to `layout.yaml` users key
 (coordinator)  
-> **Note**: Pre-genesis set closes here. Wait for coordinator.
+> ⚠️ **Note**: Pre-genesis set closes here. Wait for coordinator.
 
 ### 10. Pull from genesis repo and build
 ```bash
@@ -93,6 +93,8 @@ cd ~/libra-framework/tools/genesis
 GIT_ORG=0LNetworkCommunity GIT_REPO=release-v6.9.0-rc.0-genesis-6 RECOVERY_FILE=~/v5.2_recovery.json make genesis
 ```
 - Confirm with "done" in the Genesis Worksheet.
+
+> ⚠️ **Note**: All set. Wait for the coordinator before the next step.
 
 ### 11. Start nodes!
 ```bash
