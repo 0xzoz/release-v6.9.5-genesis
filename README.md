@@ -80,7 +80,7 @@ cd ~/libra-legacy-v6/ol/genesis-tools
 cargo r -p ol-genesis-tools -- --ancestry-file ~/ol-data-extraction/assets/data.json --recover ~/v5_recovery.json --snapshot-path ~/epoch-archive/667/state_ver*
 md5sum ~/v5_recovery.json
 ```
-- Confirm `v5_recover.json` md5 hash in the Genesis Worksheet.
+- Confirm `v5_recovery.json` md5 hash in the Genesis Worksheet.
 
 ### 9. All nodes added to `layout.yaml` users key
 (coordinator)  
