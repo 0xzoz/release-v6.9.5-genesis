@@ -1,97 +1,80 @@
-# release-v6.9.0-rc.0-genesis-2
+# release-v6.9.0-rc.0-genesis-6
 
 ## Genesis Instructions
-(WIP)
 
-### Testnet
+### FIRST -> CLEANUP!
+1. **Delete Previous Data**: Ensure you have deleted any previously forked `release-v6.9.0-rc.0-genesis-2` from your GitHub organization.
+    ```bash
+    rm -Rf ~/libra-framework
+    rm -Rf ~/.libra/data && rm -Rf ~/.libra/genesis && rm -Rf ~/.libra/secure-data.json
+    ```
 
-1. You'll need an empty repo to be the "coordination" repo for all node registration data. See for example `https://github.com/0o-de-lally/a-genesis`
+2. **Retrieve Validator Address**: You can retrieve the validator address using the following command:
+    ```bash
+    grep 'account_address' ~/.libra/public-keys.yaml
+    ```
 
-1a. You can copy the layout.yaml file. Later you will edit this file with the list of users participating in genesis.
+3. **Fetch Source & Verify Commit Hash**:
+    ```bash
+    cd ~
+    git clone https://github.com/0LNetworkCommunity/libra-framework
+    cd ~/libra-framework
+    git fetch --all && git checkout main
+    git log -n 1 --pretty=format:"%H"
+    ```
 
+4. **Build libra-framework Packages**:
+    ```bash
+    cd ~/libra-framework
+    cargo build --release -p libra -p libra-genesis-tools -p libra-txs -p diem-db-tool
+    ```
 
-2. Configure the nodes
+5. **Prepare .libra Directory & Add Github Key**:
+    ```bash
+    mkdir ~/.libra/
+    nano ~/.libra/github_token.txt
+    ```
 
-2a. Nodes will need to have a number of tools installed in order to compile. This script *might*  work for your distro ./util/dev-setup.sh
+6. **Pre-Genesis Registration**:
+    - Ensure you delete any forked version of `release-v6.9.0-rc.0-genesis-2` in your home organization before registering.
+    ```bash
+    cd ~/libra-framework
+    ./target/release/libra-genesis-tools register  --org-github 0LNetworkCommunity --name-github release-v6.9.0-rc.0-genesis-6
+    ```
 
-```
-# targeting ubuntu
-sudo apt update
-sudo apt install -y git tmux jq build-essential cmake clang llvm libgmp-dev pkg-config libssl-dev lld libpq-dev
+7. **Coordinator Steps**:
+    - PR Received
+    - PR Merged
+    - All nodes added to `layout.yaml` users key. (Wait for coordinator)
 
-curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain stable -y
-```
+8. **Build JSON_Legacy**:
+    - (Skip this step)
+    ```bash
+    git clone https://github.com/0L-Analytics/ol-data-extraction
+    cd ol-data-extraction
+    mkdir assets
+    cp services/treeview/example.env services/treeview/.env
+    sed -i 's/<insert_password>/869cf751355b4f4b397606f2b3e398c6/g' services/treeview/.env
+    docker compose up -d treeview
+    ```
 
-3. checkout and build `libra-v7`
+9. **Build JSON_Legacy (Alternative Method)**:
+    ```bash
+    sudo rm -Rf ~/ol-data-extraction
+    docker rmi --force $(docker images | grep treeview | awk '{print $3}')
+    cd ~ && git clone -b v-6.9.x-ready https://github.com/sirouk/ol-data-extraction
+    cd ~/ol-data-extraction
+    docker compose up -d treeview && docker logs --follow treeview
+    md5sum ~/ol-data-extraction/assets/data.json
+    ```
 
-You'll want to do "release" builds of everything. Grab a cup.
+10. **Pull from Genesis Repo and Build**:
+    ```bash
+    cd ~/libra-framework/tools/genesis
+    GIT_ORG=0LNetworkCommunity GIT_REPO=release-v6.9.0-rc.0-genesis-6 RECOVERY_FILE=~/v5.2_recovery.json make genesis
+    ```
 
-Pro tip: double check your system installs. If you missed any of the system installs above, you'll be waiting a long time to find out.
-
-```
-git clone git@github.com:0LNetworkCommunity/libra-v7.git
-cd libra-v7
-git checkout main
-
-cargo build --release -p libra -p libra-genesis-tools
-```
-
-4. Get your Github app api token
-
-
-4a. Follow the github instructions: `https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic`
-
-You'll want to choose the `repo permissions` setting.
-
-4b You'll need a directory at `$HOME/.libra`. Place your github api token in `github_token.txt` under that directory.
-
-5. Do the genesis ceremony.
-You'll use the wizard for both configuring, registering, and building the genesis transaction.
-
-You'll input the name of the github repo (`--org-github` and `--name-github `) being used to coordinate. 
-```
-./target/release/libra-genesis-tools  --org-github <ORG_GITHUB> --name-github <NAME_GITHUB> register 
-```
-
-6. Coordinator: merge pull requests.
-
-6a. The owner of the coordinator repo should merge the pull requests the registrants made to the repo.
-
-6b. Then the `layout.yaml`  file needs to be updated with the list of all the users (addresses) joining genesis.
-
-
-7. Run the genesis transaction builder with `libra-genesis-tools genesis`
-
-You'll use the same github arguments as above plus two more. You'll be using a local copy of the move framework (`--local-framework`). Last, you'll tell the wizard which DB backup file to use to migrate state from the previous network (`--json-legacy`). 
-
-For the legacy JSON you can use the test example: `tools/genesis/tests/fixtures/sample_export_recovery.json`
-
-```
-./target/release/libra-genesis-tools  --org-github <ORG_GITHUB> --name-github <NAME_GITHUB> --local-framework --json-legacy <PATH_TO_JSON> genesis
-```
-
-8. Check your files
-You should have a `genesis/genesis.blob` file now in `$HOME/libra` plus a `validator.yaml`.
-
-9. Start your node!
-
-
-```
-./target/release/libra node --config-path ~/.libra/validator.yaml
-```
-
-10. Check for progress.
-
-You can fetch chain metadata with the API
-
-`curl localhost:8080/v1`
-### Troubleshooting
-
-1. I made changes to a .move file
-
-You'll need to rebuild the framework and its generated code.
-```
-cd framework/
-cargo r --release release
-# yes two releases in there.
-```
+11. **Start Nodes!**:
+    ```bash
+    ~/libra-framework/target/release/libra node --config-path ~/.libra/validator.yaml
+    ```
