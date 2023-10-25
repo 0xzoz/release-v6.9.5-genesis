@@ -97,6 +97,7 @@ GIT_ORG=0LNetworkCommunity GIT_REPO=release-v6.9.0-rc.0-genesis-6 RECOVERY_FILE=
 > ⚠️ **Note**: All set. Wait for the coordinator before the next step.
 
 ### 11. Start nodes!
+Wait for the coordinator, say a prayer, then start!
 ```bash
 ~/libra-framework/target/release/libra node --config-path ~/.libra/validator.yaml
 ```
