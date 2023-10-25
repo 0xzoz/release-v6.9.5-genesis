@@ -64,20 +64,17 @@ cd ~/libra-framework
 
 ### 8. Build JSON_Legacy
 ```bash
-# Fetch Ancestry Data
-# install
-sudo rm -Rf ~/ol-data-extraction
-docker rmi --force $(docker images | grep treeview | awk '{print $3}')
-cd ~ && git clone -b v-6.9.x-ready https://github.com/sirouk/ol-data-extraction
-cd ~/ol-data-extraction
-docker compose up -d treeview && docker logs --follow treeview
-md5sum ~/ol-data-extraction/assets/data.json
+### Fetch Ancestry Data and Snapshot
+mkdir -p ~/libra-recovery
+wget https://github.com/0LNetworkCommunity/epoch-archive/raw/main/667.tar.gz -O ~/libra-recovery/667.tar.gz
+cd ~/libra-recovery && tar -xvzf 667.tar.gz
+wget https://raw.githubusercontent.com/sirouk/ol-data-extraction/v-6.9.x-ready/assets/data.json -O ~/libra-recovery/v5_ancestry.json
 
-# Use v5.2 codebase and snapshot to generate recovery.json for seeding v6.9.x state
+### Use v5.2 codebase and snapshot to generate recovery.json for seeding v6.9.x state
 sudo rm -Rf ~/libra-legacy-v6
 cd ~ && git clone -b v6 https://github.com/0LNetworkCommunity/libra-legacy-v6
 cd ~/libra-legacy-v6/ol/genesis-tools
-cargo r -p ol-genesis-tools -- --ancestry-file ~/ol-data-extraction/assets/data.json --recover ~/v5_recovery.json --snapshot-path ~/epoch-archive/667/state_ver*
+cargo r -p ol-genesis-tools -- --ancestry-file ~/libra-recovery/v5_ancestry.json --recover ~/libra-recovery/v5_recovery.json --snapshot-path ~/epoch-archive/667/state_ver*
 md5sum ~/v5_recovery.json
 ```
 - Confirm `v5_recovery.json` md5 hash in the Genesis Worksheet.
@@ -90,7 +87,7 @@ md5sum ~/v5_recovery.json
 ```bash
 # pull and build genesis
 cd ~/libra-framework/tools/genesis
-GIT_ORG=0LNetworkCommunity GIT_REPO=release-v6.9.0-rc.0-genesis-6 RECOVERY_FILE=~/v5.2_recovery.json make genesis
+GIT_ORG=0LNetworkCommunity GIT_REPO=release-v6.9.0-rc.0-genesis-6 RECOVERY_FILE=~/libra-recovery/v5_recovery.json make genesis
 ```
 - Confirm with "done" in the Genesis Worksheet.
 
