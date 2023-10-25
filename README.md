@@ -1,5 +1,5 @@
 
-# Genesis Ceremony Guide
+# 0L Genesis Ceremony Guide
 
 **Coordinator**: `sirouk`
 
