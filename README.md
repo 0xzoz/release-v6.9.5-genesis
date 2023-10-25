@@ -3,7 +3,7 @@
 
 **Coordinator**: `sirouk`
 
-> ⚠️ **Important**: Only proceed with asynchronous steps after the previous sequential blocking steps are confirmed as completed by the coordinator.
+> ⚠️ **Important**: Only proceed with asynchronous steps after the coordinator confirms the previous sequential blocking steps as completed.
 
 ## Genesis Ceremony Steps
 
@@ -41,7 +41,7 @@ cargo build --release -p libra -p libra-genesis-tools -p libra-txs -p diem-db-to
 ```
 - Confirm with "done" in the Genesis Worksheet.
 
-### 4. Prepare `.libra` directory and add GitHub key
+### 4. Prepare `.libra` directory and add GitHub PAT (use classic with repo privileges)
 ```bash
 mkdir ~/.libra/
 nano ~/.libra/github_token.txt
