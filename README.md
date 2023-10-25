@@ -74,8 +74,8 @@ wget https://raw.githubusercontent.com/sirouk/ol-data-extraction/v-6.9.x-ready/a
 sudo rm -Rf ~/libra-legacy-v6
 cd ~ && git clone -b v6 https://github.com/0LNetworkCommunity/libra-legacy-v6
 cd ~/libra-legacy-v6/ol/genesis-tools
-cargo r -p ol-genesis-tools -- --ancestry-file ~/libra-recovery/v5_ancestry.json --recover ~/libra-recovery/v5_recovery.json --snapshot-path ~/epoch-archive/667/state_ver*
-md5sum ~/v5_recovery.json
+cargo r -p ol-genesis-tools -- --export-json ~/libra-recovery/v5_recovery.json --snapshot-path ~/libra-recovery/667/state_ver* --ancestry-file ~/libra-recovery/v5_ancestry.json
+md5sum ~/libra-recovery/v5_recovery.json
 ```
 - Confirm `v5_recovery.json` md5 hash in the Genesis Worksheet.
 
