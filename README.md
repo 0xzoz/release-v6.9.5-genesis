@@ -52,7 +52,7 @@ nano ~/.libra/github_token.txt
 - Ensure you delete any forked version of `release-v6.9.0-rc.0-genesis-2` in your home org before registering.
 ```bash
 cd ~/libra-framework
-./target/release/libra-genesis-tools register  --org-github 0LNetworkCommunity --name-github release-v6.9.0-rc.0-genesis-6
+./target/release/libra-genesis-tools register  --org-github 0LNetworkCommunity --name-github release-v6.9.0-rc.0-genesis-7
 ```
 - Confirm with "done" in the Genesis Worksheet.
 
