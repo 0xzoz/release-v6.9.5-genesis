@@ -15,9 +15,10 @@ users:
  - 0xd1281de242839fc939745996882c5fc2
  - 0xebbd5fb7042a7021dd71e3f6bddd55f3
  - 0x656ca73517d0cb19b24a3d0d230e18b1443bec0384b2c70c1dd4dde52c7b989e
-chain_id: 4
+ - 0x851a3baf866951b36a3fe0da92ba38fc
+chain_id: 1
 allow_new_validators: true
-epoch_duration_secs: 120
+epoch_duration_secs: 86400
 is_test: false
 min_stake: 100000000000000
 min_voting_threshold: 100000000000000
