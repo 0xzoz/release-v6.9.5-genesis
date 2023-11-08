@@ -14,6 +14,7 @@ users:
  - 0xba28f081de02fc6cc3bf9879d6033911
  - 0xd1281de242839fc939745996882c5fc2
  - 0xebbd5fb7042a7021dd71e3f6bddd55f3
+ - 0x656ca73517d0cb19b24a3d0d230e18b1443bec0384b2c70c1dd4dde52c7b989e
 chain_id: 4
 allow_new_validators: true
 epoch_duration_secs: 120
