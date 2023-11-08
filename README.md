@@ -87,7 +87,7 @@ md5sum ~/libra-recovery/v5_recovery.json
 ```bash
 # pull and build genesis
 cd ~/libra-framework/tools/genesis
-GIT_ORG=0LNetworkCommunity GIT_REPO=release-v6.9.0-rc.0-genesis-6 RECOVERY_FILE=~/libra-recovery/v5_recovery.json make genesis
+GIT_ORG=0LNetworkCommunity GIT_REPO=release-v6.9.0-rc.0-genesis-7 RECOVERY_FILE=~/libra-recovery/v5_recovery.json make genesis
 ```
 - Confirm with "done" in the Genesis Worksheet.
 
